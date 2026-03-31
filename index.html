@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER CLIK | Premium AFK Counter</title>
+    <meta name="description" content="A high-performance premium AFK counter game with dynamic scaling and electric visuals.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body data-theme="cyan">
+
+    <canvas id="matrix-canvas"></canvas>
+    
+    <div class="bg-gradient"></div>
+    <div class="glow-sphere"></div>
+    
+    <main class="command-center">
+        <!-- Main Utility Frame -->
+        <div class="frame-border top-left"></div>
+        <div class="frame-border top-right"></div>
+        <div class="frame-border bottom-left"></div>
+        <div class="frame-border bottom-right"></div>
+
+        <div class="dashboard-grid">
+            <!-- Left Panel: Core Stats -->
+            <div class="side-panel left">
+                <div class="panel-header">CORE SYSTEM</div>
+                <div class="stat-row">
+                    <span class="s-label">UPTIME</span>
+                    <span class="s-value" id="uptime-text">00:00:00</span>
+                </div>
+                <div class="stat-row">
+                    <span class="s-label">DATABASE</span>
+                    <span class="s-value">LOCAL_STORAGE</span>
+                </div>
+
+                <div class="panel-header" style="margin-top: 2rem;">MASTERY</div>
+                <div class="stat-row">
+                    <span class="s-label">REBIRTHS</span>
+                    <span class="s-value" id="rebirth-text">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="s-label">PRESTIGES</span>
+                    <span class="s-value" id="prestige-text">0</span>
+                </div>
+                <div class="scanline"></div>
+                <div class="sidebar-actions">
+                    <button id="settings-btn" class="sidebar-btn">SETTINGS</button>
+                    <button id="reset-stats-btn" class="reset-btn">RESET STATS</button>
+                </div>
+            </div>
+
+            <!-- Central Hub: The Game -->
+            <div class="central-hub">
+                <header class="game-header">
+                    <h1 class="logo">CYBER<span>CLIK</span></h1>
+                    <div class="stats-badge" id="increment-badge">
+                        <span class="label">POWER</span>
+                        <span class="value" id="current-increment-text">+1.0</span>
+                    </div>
+                </header>
+        
+                <!-- Player Level Bar -->
+                <div class="level-bar">
+                    <div class="level-info">
+                        <span class="level-label" id="player-level">LVL 1</span>
+                        <span class="xp-label" id="player-xp-text">0 / 100 XP</span>
+                    </div>
+                    <div class="xp-container">
+                        <div class="xp-fill" id="player-xp-fill"></div>
+                    </div>
+                </div>
+        
+                <section class="counter-section">
+                    <div class="counter-glass">
+                        <div class="counter-label">ENERGY GENERATION</div>
+                        <div class="counter-value" id="score-display">0000</div>
+                        <div class="pulse-ring"></div>
+                    </div>
+                </section>
+        
+                <section class="progression-section">
+                    <div class="progression-glass">
+                        <div class="progression-info">
+                            <span class="next-label">NEXT MILESTONE</span>
+                            <span class="next-value" id="next-threshold-text">Next at 100</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="bonus-tag" id="bonus-tag">
+                            BONUS: +1.0 NEXT
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="game-footer">
+                    <div class="footer-stat">
+                        <span class="f-label">AUTOMATIC RATE</span>
+                        <span class="f-value" id="auto-rate-text">1.0s</span>
+                    </div>
+                    <div class="footer-stat">
+                        <span class="f-label">SCALING</span>
+                        <span class="f-value">1.5x DYN</span>
+                    </div>
+                    <div class="footer-stat">
+                        <span class="f-label">REBIRTH TARGET</span>
+                        <span class="f-value" id="rebirth-threshold-text">100.00M</span>
+                    </div>
+                    <div class="footer-stat">
+                        <span class="f-label">PRESTIGE AT</span>
+                        <span class="f-value" id="prestige-requirement-text">0/10 RB</span>
+                    </div>
+                </footer>
+            </div>
+
+            <!-- Rightmost Panel: System Logs -->
+            <div class="side-panel right">
+                <div class="panel-header">SYSTEM LOGS</div>
+                <div class="logs-container" id="system-logs">
+                    <div class="log-entry">Initializing connection...</div>
+                    <div class="log-entry">Database loaded correctly.</div>
+                </div>
+                <div class="scanline"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">ENGINE TUNING</div>
+            
+            <div class="settings-group">
+                <label>ENGINE AESTHETICS</label>
+                <div class="theme-picker">
+                    <button class="theme-opt active" data-theme="cyan">CYBER_CYAN</button>
+                    <button class="theme-opt" data-theme="unicorn">UNICORN_MODE</button>
+                    <button class="theme-opt" data-theme="emerald">EMERALD_GREEN</button>
+                    <button class="theme-opt" data-theme="ruby">RUBY_RED</button>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <label>NUMERICAL FORMATTING</label>
+                <div class="toggle-group">
+                    <button id="shorthand-toggle" class="sidebar-btn">TOGGLE SHORTHAND (ON/OFF)</button>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="close-settings" class="modal-btn secondary">BACK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div id="reset-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">PURGE CORE ARCHIVE?</div>
+            <p>This will permanently erase all energy counts, mastery tiers, and neural progress. This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button id="cancel-reset" class="modal-btn secondary">CANCEL</button>
+                <button id="confirm-reset" class="modal-btn primary">YES</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
